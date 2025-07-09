@@ -21,6 +21,3 @@ build/
 # IDE/editor configs
 .vscode/
 .idea/
-
-# Others
-uploads/

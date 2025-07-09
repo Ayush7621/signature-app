@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
+const docRoutes = require('./routes/docs');
 
 dotenv.config();
 
@@ -15,10 +16,11 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/docs', docRoutes);
 
 // Test route
 app.get('/', (req, res) => {
-  res.send('API is working \ud83c\udf89');
+  res.send('API is working 🎉');
 });
 
 // MongoDB Connection
@@ -26,8 +28,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
-  console.log('\u2705 MongoDB connected');
-    app.listen(8000, () => console.log('🚀 Server running on http://localhost:8000'));
+  console.log('✅ MongoDB connected');
+  app.listen(8000, () => console.log('🚀 Server running on http://localhost:8000'));
 }).catch(err => {
-  console.error('\u274c MongoDB connection error:', err);
+  console.error('❌ MongoDB connection error:', err);
 });
