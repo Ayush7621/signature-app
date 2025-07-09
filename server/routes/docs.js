@@ -4,10 +4,10 @@ const Document = require('../models/Document');
 
 const router = express.Router();
 
-// ✅ Multer Storage Config
+// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Make sure this folder exists
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + '-' + file.originalname;
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ✅ Upload PDF Route
+// Upload PDF Route
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     console.log('📥 Upload route hit');
@@ -40,6 +40,17 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   } catch (err) {
     console.error('❌ Upload Error:', err);
     res.status(500).json({ message: 'Upload failed' });
+  }
+});
+
+// List all uploaded PDFs
+router.get('/', async (req, res) => {
+  try {
+    const docs = await Document.find().sort({ uploadedAt: -1 });
+    res.json(docs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching documents' });
   }
 });
 
